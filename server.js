@@ -61,7 +61,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 function formatDate(dateString) {
     const date = new Date(dateString);
     const optionsDate = { day: '2-digit', month: '2-digit', year: '2-digit' };
-    const optionsTime = { hour: '2-digit', minute: '2-digit' };
+    const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
     const formattedDate = date.toLocaleDateString('en-GB', optionsDate).replace(/\//g, '-');
     const formattedTime = date.toLocaleTimeString('en-GB', optionsTime);
     return `${formattedDate} | ${formattedTime}`;
