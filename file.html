@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="file.css">
+    <title>File Page</title>
+</head>
+<body>
+    <main>
+        <h1 id="fileName"></h1>
+        <a id="fileLink" href="#" target="_blank">Download File</a>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const filename = urlParams.get('filename');
+            const fileUrl = `/files/${filename}`;
+            document.getElementById('fileName').textContent = filename;
+            document.getElementById('fileLink').href = fileUrl;
+        });
+    </script>
+</body>
+</html>

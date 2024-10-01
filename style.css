@@ -1,10 +1,46 @@
-body {
-    background-image: radial-gradient(rgba(255, 255, 255, 0) 0, transparent 0),
-                      radial-gradient(rgb(146, 146, 146) 0.01vw, transparent 0);
-    background-size: 4vw 4vw, 2vw 2vw;
-    background-color: #101010;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
 }
 
-a {
-    color: violet;
+body {
+    background-image: radial-gradient(rgba(255, 255, 255, 0) 0, transparent 0),
+                      radial-gradient(rgba(146, 146, 146, 0.355) 0.055vw, transparent 0);
+    background-size: 4vw 4vw, 5vw 5vw;
+    background-color: #101010;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+#fileInput {
+    display: none;
+}
+
+#uploadForm {
+    display: flex;
+}
+
+.custom-file-input {
+    color: #fff;
+    background-color: #3EDA72;
+    padding: 1vw 2vw;
+    cursor: pointer;
+    font-size: 0.95vw;
+    border-radius: 0.8vw;
+    border: #45F37E 0.15vw solid;
+    transition: 0.3s;
+}
+
+.custom-file-input:hover {
+    background-color: #2b633e;
 }
