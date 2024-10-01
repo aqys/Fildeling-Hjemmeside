@@ -27,17 +27,18 @@ body::-webkit-scrollbar {
 
 .custom-file-input {
     color: #fff;
-    background-color: #3EDA72;
+    background-color: #da3e3e;
     padding: 1vw 2vw;
     cursor: pointer;
     font-size: 0.95vw;
     border-radius: 0.8vw;
-    border: #45F37E 0.15vw solid;
+    border: #f34545 0.15vw solid;
     transition: 0.3s;
     text-decoration: none;
     font-weight: 400;
 }
 
 .custom-file-input:hover {
-    background-color: #2b633e;
+    background-color: #f34545;
+    box-shadow: 0 0 2vw #e62a2ae1;
 }
