@@ -1,6 +1,6 @@
 body {
     background-image: radial-gradient(rgba(255, 255, 255, 0) 0, transparent 0),
-                      radial-gradient(rgba(146, 146, 146, 0.355) 0.055vw, transparent 0);
+                      radial-gradient(rgba(146, 146, 146, 1) 0.055vw, transparent 0);
     background-size: 4vw 4vw, 5vw 5vw;
     background-color: #101010;
     overflow-x: hidden;
@@ -13,7 +13,7 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
-a {
+#fileLink {
     color: #fff;
     background-color: #da3e3e;
     padding: 0.75vw 1.5vw;
@@ -26,11 +26,12 @@ a {
     font-weight: normal;
     margin-left: 0vw;
     display: inline-block;
+    box-shadow: 0 0 1.5vw #e62a2a4d;
 }
 
-a:hover {
+#fileLink:hover {
     background-color: #f34545;
-    box-shadow: 0 0 1.5vw #e62a2ac5;
+    box-shadow: 0 0 2vw #e62a2aab;
 }
 
 main {
@@ -41,4 +42,20 @@ main {
     color: #fff;
     font-weight: bold;
     margin-bottom: 2.5vh;
+}
+
+#uploadDate {
+    color: #ffffff;
+    font-size: 0.85vw;
+    opacity: 0.45;
+    margin-top: -1vh;
+    font-weight: bold;
+}
+
+#back {
+    color: #c7c7c7;
+    position: absolute;
+    margin-top: 5.5vh;
+    margin-left: -4.75vw;
+    cursor: pointer;
 }

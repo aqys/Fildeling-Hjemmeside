@@ -1,6 +1,6 @@
 body {
     background-image: radial-gradient(rgba(255, 255, 255, 0) 0, transparent 0),
-                      radial-gradient(rgba(146, 146, 146, 0.355) 0.055vw, transparent 0);
+                      radial-gradient(rgba(146, 146, 146, 1) 0.055vw, transparent 0);
     background-size: 4vw 4vw, 5vw 5vw;
     background-color: #101010;
     overflow-x: hidden;
@@ -36,9 +36,41 @@ body::-webkit-scrollbar {
     transition: 0.3s;
     text-decoration: none;
     font-weight: 400;
+    margin-top: -2vh;
+    margin-bottom: 2vh;
+    box-shadow: 0 0 1.5vw #e62a2a4d;
 }
 
 .custom-file-input:hover {
     background-color: #f34545;
-    box-shadow: 0 0 2vw #e62a2ae1;
+    box-shadow: 0 0 2vw #e62a2aab;
+}
+
+#recentFiles {
+    background-color: transparent;
+    margin-left: -44vw;
+    margin-top: -22vw;
+    width: 25vw;
+    height: 92.5vh;
+    position: absolute;
+}
+
+li a {
+    list-style-type: none;
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    margin-left: -1.5vw;
+    margin-bottom: 4.5vh;
+}
+
+h2 {
+    color: #f34545;
+}
+
+.upload-info {
+    color: #ffffff8a;
+    position: absolute;
+    margin-top: -4vh;
+    margin-left: -1.5vw;
 }
