@@ -4,3 +4,7 @@ body {
     background-size: 4vw 4vw, 2vw 2vw;
     background-color: #101010;
 }
+
+a {
+    color: violet;
+}
