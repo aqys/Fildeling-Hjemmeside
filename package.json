@@ -6,6 +6,15 @@
     "uuid": "^10.0.0"
   },
   "scripts": {
-    "start": "nodemon --ignore files/* server.js"
-  }
+    "start": "nodemon --ignore files/* server.js",
+    "build": "node server.js"
+  },
+  "name": "fildeling-hjemmeside",
+  "version": "1.0.0",
+  "description": "Her kan man dele filer og hente filer fra andre",
+  "main": "script.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
