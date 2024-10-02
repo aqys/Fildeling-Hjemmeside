@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="script.js" defer></script>
-    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Unbounded' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
@@ -16,10 +16,27 @@
             <ul id="fileList"></ul>
         </div>
         <form id="uploadForm" enctype="multipart/form-data">
+            <div id="uploadProgressText" class="progress-text" style="display: none;">0%</div>
             <input type="file" id="fileInput" name="file">
             <label for="fileInput" class="custom-file-input">Upload File</label>
+            <svg id="upload" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z"
+                />
+                <path
+                    d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z"
+                />
+            </svg>
+            <p class="info">Max. 10mb</p>
         </form>
         <div id="uploadResult"></div>
+        <p class="copyright">&copy; 2024. Alle rettigheder forbeholdes.</p>
     </main>
+    <div id="fileSizeModal" class="modal">
+        <div class="modal-content">
+            <p>File size exceeds the limit of 10 MB.</p>
+            <button class="close">Close</button>
+        </div>
+    </div>
 </body>
 </html>

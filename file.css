@@ -1,8 +1,19 @@
+html {
+    scroll-behavior: smooth;
+    font-size: 2rem;
+    font-family: 'Unbounded';
+}
+
 body {
-    background-image: radial-gradient(rgba(255, 255, 255, 0) 0, transparent 0),
-                      radial-gradient(rgba(146, 146, 146, 1) 0.055vw, transparent 0);
-    background-size: 4vw 4vw, 5vw 5vw;
-    background-color: #101010;
+    background-image: radial-gradient(
+        circle at center,
+        black 0.25rem,
+        transparent 0
+      ), radial-gradient(circle at center, var(--color) 0.1vw, transparent 0);
+    background-size: 7vw 7vw;
+    background-position: 0 0, 0.65rem 0.65rem;
+    background-color: #090909;
+    animation: opacity 25s infinite;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
@@ -10,28 +21,49 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-family: "Poppins", sans-serif;
+}
+
+@property --color {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #fff;
+}
+
+@keyframes opacity {
+    0% {
+        --color: #ffffff2f;
+    }
+    50% {
+        --color: #ffffff2f;
+    }
+    100% {
+        --color: #ffffff2f;
+    }
 }
 
 #fileLink {
     color: #fff;
-    background-color: #da3e3e;
-    padding: 0.75vw 1.5vw;
+    background-color: #F97316;
+    padding: .5vw 1vw;
     cursor: pointer;
-    font-size: 0.7vw;
-    border-radius: 0.8vw;
-    border: #f34545 0.15vw solid;
-    transition: 0.3s;
+    font-size: 0.95vw;
+    border-radius: 0.75vw;
+    border: #FB923C 0.2vw solid;
     text-decoration: none;
-    font-weight: normal;
-    margin-left: 0vw;
-    display: inline-block;
-    box-shadow: 0 0 1.5vw #e62a2a4d;
+    font-weight: 400;
+    margin-top: -2vh;
+    margin-bottom: 2vh;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 2.5vw #fb923ca2;
 }
 
 #fileLink:hover {
-    background-color: #f34545;
-    box-shadow: 0 0 2vw #e62a2aab;
+    color: #090909;
+    background-color: #fff;
+    border-color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 0 2.5vw #ffffffa2;
 }
 
 main {
@@ -41,21 +73,47 @@ main {
 #fileName {
     color: #fff;
     font-weight: bold;
-    margin-bottom: 2.5vh;
+    font-size: 2vw;
 }
 
 #uploadDate {
     color: #ffffff;
-    font-size: 0.85vw;
+    font-size: 1vw;
     opacity: 0.45;
-    margin-top: -1vh;
+    margin-top: -1vw;
     font-weight: bold;
 }
 
-#back {
-    color: #c7c7c7;
-    position: absolute;
-    margin-top: 5.5vh;
-    margin-left: -4.75vw;
+#back button{
+    color: #fff;
+    background-color: #090909;
+    padding: .375vw .75vw;
     cursor: pointer;
+    font-size: 0.8vw;
+    border-radius: 0.3vw;
+    border: hsla(0, 0%, 100%, .25) 0.1vw solid;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    text-decoration: none;
+    font-weight: 400;
+    margin-top: -2vh;
+    margin-bottom: 2vh;
+}
+
+#back button:hover {
+    color: #090909;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vw; /* Optional: Adds space between the links */
+    margin-top: 2vw;
+}
+
+#fileLink, #back {
+    display: block;
+    margin: -0.25vw 0; /* Optional: Adds vertical margin to each link */
 }

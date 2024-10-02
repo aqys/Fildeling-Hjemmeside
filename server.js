@@ -2,9 +2,15 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors'); // Add this line
 
 const app = express();
-const upload = multer({ dest: 'files/' });
+app.use(cors()); // Add this line
+
+const upload = multer({
+    dest: 'files/',
+    limits: { fileSize: 10 * 1024 * 1024 } // 10 MB file size limit
+});
 
 const metadataFilePath = path.join(__dirname, 'files', 'metadata.json');
 let fileMetadata = {};
@@ -43,19 +49,47 @@ app.post('/upload', upload.single('file'), (req, res) => {
         counter++;
     }
 
-    fs.rename(file.path, filePath, (err) => {
-        if (err) {
+    const renameWithRetry = (oldPath, newPath, retries = 5, delay = 100) => {
+        return new Promise((resolve, reject) => {
+            const attemptRename = (retryCount) => {
+                fs.rename(oldPath, newPath, (err) => {
+                    if (!err) {
+                        return resolve();
+                    }
+                    if (err.code === 'EBUSY' && retryCount > 0) {
+                        setTimeout(() => attemptRename(retryCount - 1), delay);
+                    } else {
+                        reject(err);
+                    }
+                });
+            };
+            attemptRename(retries);
+        });
+    };
+
+    renameWithRetry(file.path, filePath)
+        .then(() => {
+            const uploadDate = new Date().toISOString();
+            fileMetadata[originalName] = { uploadDate };
+            fs.writeFileSync(metadataFilePath, JSON.stringify(fileMetadata, null, 2));
+
+            const filePageUrl = `${req.protocol}://${req.get('host')}/file/${originalName}`;
+            res.json({ url: filePageUrl });
+        })
+        .catch((err) => {
             console.error('Error saving file:', err);
-            return res.status(500).json({ error: 'Failed to save file' });
+            res.status(500).json({ error: 'Failed to save file' });
+        });
+});
+
+// Error handling middleware for multer
+app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ error: 'File size exceeds the limit of 5 MB' });
         }
-
-        const uploadDate = new Date().toISOString();
-        fileMetadata[originalName] = { uploadDate };
-        fs.writeFileSync(metadataFilePath, JSON.stringify(fileMetadata, null, 2));
-
-        const filePageUrl = `${req.protocol}://${req.get('host')}/file/${originalName}`;
-        res.json({ url: filePageUrl });
-    });
+    }
+    next(err);
 });
 
 function formatDate(dateString) {
@@ -78,14 +112,19 @@ app.get('/file/:filename', (req, res) => {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="/file.css">
+            <link href='https://fonts.googleapis.com/css?family=Unbounded' rel='stylesheet'>
             <title>File | ${filename}</title>
         </head>
         <body>
             <main>
                 <h1 id="fileName">${filename}</h1>
                 <p id="uploadDate">Uploaded on: ${formatDate(uploadDate)}</p>
-                <a id="fileLink" href="${fileUrl}" target="_blank">Download File</a>
-                <a id="back" href="/index.html">Back</a>
+                <div class="link-container">
+                    <a id="fileLink" href="${fileUrl}" target="_blank">Download File</a>
+                    <a id="back" href="/index.html">
+                        <button>Back</button>
+                    </a>
+                </div>
             </main>
         </body>
         </html>

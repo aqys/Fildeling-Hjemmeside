@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="file.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <link href='https://fonts.googleapis.com/css?family=Unbounded' rel='stylesheet'>
     <title>File Page</title>
 </head>
 <body>
     <main>
         <h1 id="fileName"></h1>
         <p id="uploadDate"></p>
-        <a id="fileLink" href="#" target="_blank">Download File</a>
-        <a id="back" href="/index.html">Back</a>
+        <div class="link-container">
+            <a id="fileLink" href="#" target="_blank">Download File</a>
+            <a id="back" href="/index.html">
+                <button>Back</button>
+            </a>
+        </div>
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

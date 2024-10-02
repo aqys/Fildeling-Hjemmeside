@@ -1,36 +1,75 @@
-document.getElementById('fileInput').addEventListener('change', async function(event) {
-    if (event.target.files.length > 0) {
-        const formData = new FormData();
-        formData.append('file', event.target.files[0]);
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+    const file = event.target.files[0];
 
-        try {
-            const response = await fetch('http://localhost:3000/upload', {
-                method: 'POST',
-                body: formData
-            });
+    if (file.size > MAX_FILE_SIZE) {
+        const modal = document.getElementById('fileSizeModal');
+        const closeModalButtons = document.querySelectorAll('.close');
+        modal.classList.add('show');
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        closeModalButtons.forEach(button => {
+            button.onclick = function() {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500); // Match the transition duration
+            };
+        });
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500); // Match the transition duration
             }
+        };
 
-            const result = await response.json();
-            window.location.href = result.url;
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-        }
+        return;
+    }
+
+    if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://172.16.3.42:3000/upload', true); // Update this line
+
+        xhr.upload.onprogress = function(event) {
+            if (event.lengthComputable) {
+                const percentComplete = Math.round((event.loaded / event.total) * 100);
+                const progressText = document.getElementById('uploadProgressText');
+                progressText.style.display = 'block';
+                progressText.textContent = `${percentComplete}%`;
+            }
+        };
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const result = JSON.parse(xhr.responseText);
+                window.location.href = result.url;
+            } else {
+                console.error('Upload failed:', xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function() {
+            console.error('There was a problem with the upload operation.');
+        };
+
+        xhr.send(formData);
     }
 });
 
 async function fetchRecentFiles() {
     try {
-        const response = await fetch('http://localhost:3000/recent-files');
+        const response = await fetch('http://172.16.3.42:3000/recent-files'); // Update this line
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const files = await response.json();
 
-        // Sort files by upload date (newest to oldest)
-        files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+        files.sort((a, b) => parseDate(b.uploadDate) - parseDate(a.uploadDate));
 
         const fileList = document.getElementById('fileList');
         fileList.innerHTML = '';
@@ -47,8 +86,15 @@ async function fetchRecentFiles() {
             fileList.appendChild(listItem);
         });
     } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error('fetch fejl:', error);
     }
+}
+
+function parseDate(dateString) {
+    const [date, time] = dateString.split(' | ');
+    const [month, day, year] = date.split('-');
+    const [hours, minutes, seconds] = time.split(':');
+    return new Date(`20${year}-${month}-${day}T${hours}:${minutes}:${seconds}`);
 }
 
 document.addEventListener('DOMContentLoaded', fetchRecentFiles);
