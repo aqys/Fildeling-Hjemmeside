@@ -2,10 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const cors = require('cors'); // Add this line
+const cors = require('cors');
 
 const app = express();
-app.use(cors()); // Add this line
+app.use(cors());
 
 const upload = multer({
     dest: 'files/',
@@ -151,3 +151,27 @@ app.use('/files', express.static(path.join(__dirname, 'files')));
 app.listen(3000, () => {
     console.log('Server started on http://localhost:3000');
 });
+
+// Periodic check to delete files older than 24 hours
+setInterval(() => {
+    const now = new Date();
+    const oneMinuteAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+    console.log('Running periodic check for files older than 24 hours');
+
+    for (const [filename, metadata] of Object.entries(fileMetadata)) {
+        const uploadDate = new Date(metadata.uploadDate);
+        if (uploadDate < oneMinuteAgo) {
+            const filePath = path.join(__dirname, 'files', filename);
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error(`Error deleting file ${filename}:`, err);
+                } else {
+                    console.log(`Deleted file ${filename}`);
+                    delete fileMetadata[filename];
+                    fs.writeFileSync(metadataFilePath, JSON.stringify(fileMetadata, null, 2));
+                }
+            });
+        }
+    }
+}, 5 * 60 * 1000); // Run every 5 minutes

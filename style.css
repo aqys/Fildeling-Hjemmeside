@@ -105,11 +105,13 @@ li a {
     width: max-content;
     font-size: 90%;
     font-weight: 100;
-    transition: color 0.2s;
+    transition: color 0.3s, filter 0.3s;
+    filter: drop-shadow(0 0 0vw #fb923ca9);
 }
 
 li a:hover {
     color: #FB923C;
+    filter: drop-shadow(0 0 0.25vw #fb923c70);
 }
 
 h2 {
@@ -143,7 +145,7 @@ h2 {
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 0.3s;
 }
 
 .modal.show {

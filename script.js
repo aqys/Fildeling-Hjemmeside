@@ -5,6 +5,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     if (file.size > MAX_FILE_SIZE) {
         const modal = document.getElementById('fileSizeModal');
         const closeModalButtons = document.querySelectorAll('.close');
+        modal.style.display = 'block'; // Ensure the modal is displayed
         modal.classList.add('show');
 
         closeModalButtons.forEach(button => {
