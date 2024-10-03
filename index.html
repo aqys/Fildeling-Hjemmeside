@@ -7,10 +7,53 @@
     <script type="module" src="script.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Unbounded' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>User Dashboard</title>
 </head>
 <body>
     <main>
+        <!-- User Authentication Section -->
+        <section id="authSection">
+            <h2>User Authentication</h2>
+
+            <!-- Signup Form -->
+            <div id="signupForm" class="authForm">
+                <h3>Signup</h3>
+                <form id="signup" method="POST">
+                    <input type="text" id="signupUsername" placeholder="Username" required><br>
+                    <input type="password" id="signupPassword" placeholder="Password" required><br>
+                    <button type="submit">Signup</button>
+                </form>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="authForm">
+                <h3>Login</h3>
+                <form id="login" method="POST">
+                    <input type="text" id="loginUsername" placeholder="Username" required><br>
+                    <input type="password" id="loginPassword" placeholder="Password" required><br>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+
+            <!-- Logout Button -->
+            <div id="logoutButton" style="display:none;">
+                <button id="logout">Logout</button>
+            </div>
+        </section>
+
+        <!-- User Profile Section (Visible after login) -->
+        <section id="profileSection" style="display:none;">
+            <h2>User Profile</h2>
+            <div id="profilePicContainer">
+                <img id="profilePic" src="default-profile.png" alt="Profile Picture">
+                <form id="profilePicForm" enctype="multipart/form-data">
+                    <input type="file" id="profilePicInput" name="profilePic" accept="image/*">
+                    <button type="submit">Change Profile Picture</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- File Upload Section -->
         <div id="recentFiles">
             <h2>Recently Uploaded Files</h2>
             <ul id="fileList"></ul>
@@ -20,18 +63,17 @@
             <input type="file" id="fileInput" name="file">
             <label for="fileInput" class="custom-file-input">Upload File</label>
             <svg id="upload" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z"
-                />
-                <path
-                    d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z"
-                />
+                <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" />
+                <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" />
             </svg>
             <p class="info">Max. 10mb</p>
         </form>
+
         <div id="uploadResult"></div>
-        <p class="copyright">&copy; 2024. Alle rettigheder forbeholdes.</p>
+        <p class="copyright">&copy; 2024. All rights reserved.</p>
     </main>
+
+    <!-- Modal for File Size Warning -->
     <div id="fileSizeModal" class="modal">
         <div class="modal-content">
             <p>File size exceeds the limit of 10 MB.</p>

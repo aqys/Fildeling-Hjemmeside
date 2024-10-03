@@ -1,4 +1,3 @@
-
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
     const file = event.target.files[0];
@@ -100,3 +99,133 @@ function parseDate(dateString) {
 }
 
 document.addEventListener('DOMContentLoaded', fetchRecentFiles);
+
+// Handle Signup
+document.getElementById('signup').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const username = document.getElementById('signupUsername').value;
+    const password = document.getElementById('signupPassword').value;
+
+    const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
+
+    if (response.ok) {
+        alert('Signup successful');
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+    } else {
+        alert('Signup failed');
+    }
+});
+
+// Handle Login
+document.getElementById('login').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
+
+    if (response.ok) {
+        alert('Login successful');
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'block';
+        document.getElementById('logoutButton').style.display = 'block';
+    } else {
+        alert('Login failed');
+    }
+});
+
+// Handle Logout
+document.getElementById('logout').addEventListener('click', async function() {
+    const response = await fetch('http://localhost:3000/logout');
+    if (response.ok) {
+        alert('Logout successful');
+        document.getElementById('profileSection').style.display = 'none';
+        document.getElementById('authSection').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('logoutButton').style.display = 'none';
+    }
+});
+
+// Handle Profile Picture Change
+document.getElementById('profilePicForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    const file = document.getElementById('profilePicInput').files[0];
+    formData.append('profilePic', file);
+
+    fetch('http://localhost:3000/change-profile-pic', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.url) {
+            document.getElementById('profilePic').src = data.url;
+        }
+    })
+    .catch(err => console.error(err));
+});
+
+// New Login and Signup Handlers with JWT
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        localStorage.setItem('token', result.token);
+        alert('Login successful');
+        displayProfile();
+    } else {
+        alert(result.error);
+    }
+});
+
+document.getElementById('signupForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const username = document.getElementById('signupUsername').value;
+    const password = document.getElementById('signupPassword').value;
+
+    const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        localStorage.setItem('token', result.token);
+        alert('Signup successful');
+        displayProfile();
+    } else {
+        alert(result.error);
+    }
+});
+
+function displayProfile() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('profileSection').style.display = 'block';
+    document.getElementById('logoutButton').style.display = 'block';
+}
