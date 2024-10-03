@@ -101,7 +101,7 @@ li a {
     color: #fff;
     display: block;
     margin-left: -10%;
-    margin-bottom: 20%;
+    margin-bottom: 15%;
     width: max-content;
     font-size: 90%;
     font-weight: 100;
@@ -121,7 +121,7 @@ h2 {
 .upload-info {
     color: #ffffff8a;
     position: absolute;
-    margin-top: -15%;
+    margin-top: -10%;
     margin-left: -8.5%;
     font-size: 80%;
 }
@@ -188,7 +188,7 @@ h2 {
     cursor: pointer;
 }
 
-li:nth-of-type(1n+14) {
+li:nth-of-type(1n+11) {
     display: none;
 }
 
