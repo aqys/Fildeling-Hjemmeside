@@ -2,6 +2,30 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
     const file = event.target.files[0];
 
+    const dropZone = document.getElementById('dropZone');
+    const dropText = document.getElementById('dropText');
+
+    document.addEventListener('dragover', function(event) {
+        event.preventDefault();
+        dropZone.style.display = 'flex';
+    });
+
+    document.addEventListener('dragleave', function(event) {
+        if (!dropZone.contains(event.relatedTarget)) {
+            dropZone.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('drop', function(event) {
+        event.preventDefault();
+        dropZone.style.display = 'none';
+    
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileUpload(files[0]);
+        }
+    });
+
     if (file.size > MAX_FILE_SIZE) {
         const modal = document.getElementById('fileSizeModal');
         const closeModalButtons = document.querySelectorAll('.close');
@@ -54,6 +78,12 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
             }
         };
 
+/*************  ✨ Codeium Command ⭐  *************/
+        // If an error occurs while uploading a file, the onerror property will
+        // be called. This event is triggered when the request encounters an
+        // error, such as a network error, or when the server responds with an
+        // HTTP status code that indicates an error (4xx or 5xx).
+/******  20993e3b-bda8-4163-811c-c4248b495e57  *******/
         xhr.onerror = function() {
             console.error('There was a problem with the upload operation.');
         };

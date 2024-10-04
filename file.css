@@ -5,14 +5,7 @@ html {
 }
 
 body {
-    background-image: radial-gradient(
-        circle at center,
-        black 0.25rem,
-        transparent 0
-      ), radial-gradient(circle at center, var(--color) 0.1vw, transparent 0);
-    background-size: 7vw 7vw;
-    background-position: 0 0, 0.65rem 0.65rem;
-    background-color: #090909;
+    background-color: #090907;
     animation: opacity 25s infinite;
     overflow-x: hidden;
     margin: 0;
@@ -43,22 +36,22 @@ body {
 
 #fileLink {
     color: #fff;
-    background-color: #F97316;
+    background-color: #04FB76;
     padding: .5vw 1vw;
     cursor: pointer;
     font-size: 0.95vw;
-    border-radius: 0.75vw;
-    border: #FB923C 0.2vw solid;
+    border-radius: 0.4vw;
+    border: #19EE7D 0.2vw solid;
     text-decoration: none;
     font-weight: 400;
     margin-top: -2vh;
     margin-bottom: 2vh;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 2.5vw #fb923ca2;
+    box-shadow: 0 0 2.5vw #19EE7Da2;
 }
 
 #fileLink:hover {
-    color: #090909;
+    color: #090907;
     background-color: #fff;
     border-color: #fff;
     text-decoration: none;
@@ -86,11 +79,11 @@ main {
 
 #back button{
     color: #fff;
-    background-color: #090909;
+    background-color: #090907;
     padding: .375vw .75vw;
     cursor: pointer;
     font-size: 0.8vw;
-    border-radius: 0.3vw;
+    border-radius: 0.4vw;
     border: hsla(0, 0%, 100%, .25) 0.1vw solid;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     text-decoration: none;
@@ -100,7 +93,7 @@ main {
 }
 
 #back button:hover {
-    color: #090909;
+    color: #090907;
     background-color: #fff;
     border-color: #fff;
 }

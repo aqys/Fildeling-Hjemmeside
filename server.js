@@ -149,7 +149,7 @@ app.get('/recent-files', (req, res) => {
 app.use('/files', express.static(path.join(__dirname, 'files')));
 
 app.listen(3000, () => {
-    console.log('Server started on http://localhost:3000');
+    console.log('Server started on http://172.16.3.42:3000');
 });
 
 // Periodic check to delete files older than 24 hours
