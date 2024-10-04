@@ -1,11 +1,85 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+const JWT_SECRET = 'your_secret_key'; // Use environment variable in production
+
+const USERS_FILE_PATH = path.join(__dirname, 'users.json');
+let usersData = JSON.parse(fs.readFileSync(USERS_FILE_PATH, 'utf-8'));
+
+// Helper function to save users to JSON file
+function saveUsersToFile() {
+    fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(usersData, null, 2));
+}
+
+// Signup route
+app.post('/signup', async (req, res) => {
+    const { username, password } = req.body;
+
+    // Check if the user already exists
+    const userExists = usersData.users.find(user => user.username === username);
+    if (userExists) {
+        return res.status(400).json({ error: 'User already exists' });
+    }
+
+    // Hash the password before saving it
+    const hashedPassword = await bcrypt.hash(password, 10);
+    usersData.users.push({ username, password: hashedPassword, profilePic: 'default-profile.png' });
+    saveUsersToFile();
+
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1d' });
+    res.json({ message: 'Signup successful', token });
+});
+
+// Login route
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    const user = usersData.users.find(user => user.username === username);
+    if (!user) {
+        return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    // Compare entered password with the stored hashed password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+        return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1d' });
+    res.json({ message: 'Login successful', token });
+});
+
+// Middleware to authenticate using JWT
+function authenticateJWT(req, res, next) {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(403).json({ error: 'Not authenticated' });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ error: 'Invalid token' });
+        }
+        req.user = user;
+        next();
+    });
+}
+
+// Logout route (optional, since JWT is stateless)
+app.get('/logout', (req, res) => {
+    res.json({ message: 'Logout successful' });
+});
 
 const upload = multer({
     dest: 'files/',
@@ -29,7 +103,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload', authenticateJWT, upload.single('file'), (req, res) => {
     const file = req.file;
     if (!file) {
         console.error('No file uploaded');
@@ -148,19 +222,47 @@ app.get('/recent-files', (req, res) => {
 
 app.use('/files', express.static(path.join(__dirname, 'files')));
 
+<<<<<<< HEAD
 app.listen(3000, () => {
     console.log('Server started on http://172.16.3.42:3000');
+=======
+// Multer setup for profile picture uploads
+const profilePicStorage = multer.diskStorage({
+    destination: 'profile-pics/',
+    filename: (req, file, cb) => {
+        const username = req.user.username; // Use the authenticated user's username
+        cb(null, `${username}-${file.originalname}`);
+    }
+});
+const uploadProfilePic = multer({ storage: profilePicStorage });
+
+// Profile picture upload route
+app.post('/change-profile-pic', authenticateJWT, uploadProfilePic.single('profilePic'), (req, res) => {
+    const user = usersData.users.find(user => user.username === req.user.username);
+    if (user) {
+        const profilePicPath = `profile-pics/${req.file.filename}`;
+        user.profilePic = profilePicPath;
+        saveUsersToFile();
+        res.status(200).json({ message: 'Profile picture updated', url: profilePicPath });
+    } else {
+        res.status(403).json({ error: 'User not found' });
+    }
 });
 
-// Periodic check to delete files older than 24 hours
+app.listen(3000, () => {
+    console.log('Server started on http://172.16.3.42/:3000');
+>>>>>>> 5e3546d205ea34e919ede4ebd4db35dd8d58269b
+});
+
 setInterval(() => {
     const now = new Date();
     const oneMinuteAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-    console.log('Running periodic check for files older than 24 hours');
+    console.log('Running periodic check for files older than 24 hours at', now);
 
     for (const [filename, metadata] of Object.entries(fileMetadata)) {
         const uploadDate = new Date(metadata.uploadDate);
+        console.log(`Checking file: ${filename}, uploadDate: ${uploadDate}`);
         if (uploadDate < oneMinuteAgo) {
             const filePath = path.join(__dirname, 'files', filename);
             fs.unlink(filePath, (err) => {
@@ -174,4 +276,4 @@ setInterval(() => {
             });
         }
     }
-}, 5 * 60 * 1000); // Run every 5 minutes
+}, 5 * 60 * 1000);

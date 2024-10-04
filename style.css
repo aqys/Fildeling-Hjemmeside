@@ -198,6 +198,22 @@ li:nth-of-type(1n+11) {
     position: absolute;
     color: #f5f5f550;
     font-size: 0.7vw;
+<<<<<<< HEAD
     margin-top: 22%;
     margin-left: -2.5%;
+=======
+    margin-top: 20%;
+    margin-left: -2.75%;
+}
+
+#profilePic {
+    position: absolute;
+    width: 3.5vw;
+    height: 3.5vw;
+    margin-left: 56vw;
+    margin-top: -51vh;
+    border-radius: 50%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+>>>>>>> 5e3546d205ea34e919ede4ebd4db35dd8d58269b
 }
