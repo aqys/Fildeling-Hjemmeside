@@ -29,7 +29,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     if (file.size > MAX_FILE_SIZE) {
         const modal = document.getElementById('fileSizeModal');
         const closeModalButtons = document.querySelectorAll('.close');
-        modal.style.display = 'block'; // Ensure the modal is displayed
+        modal.style.display = 'block';
         modal.classList.add('show');
 
         closeModalButtons.forEach(button => {
@@ -37,7 +37,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 modal.classList.remove('show');
                 setTimeout(() => {
                     modal.style.display = 'none';
-                }, 500); // Match the transition duration
+                }, 500);
             };
         });
 
@@ -46,7 +46,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 modal.classList.remove('show');
                 setTimeout(() => {
                     modal.style.display = 'none';
-                }, 500); // Match the transition duration
+                }, 500);
             }
         };
 
@@ -58,7 +58,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
         formData.append('file', file);
 
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://172.16.3.42:3000/upload', true); // Update this line
+        xhr.open('POST', 'http://172.16.3.42:3000/upload', true);
 
         xhr.upload.onprogress = function(event) {
             if (event.lengthComputable) {
@@ -77,15 +77,8 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 console.error('Upload failed:', xhr.statusText);
             }
         };
-
-/*************  ✨ Codeium Command ⭐  *************/
-        // If an error occurs while uploading a file, the onerror property will
-        // be called. This event is triggered when the request encounters an
-        // error, such as a network error, or when the server responds with an
-        // HTTP status code that indicates an error (4xx or 5xx).
-/******  20993e3b-bda8-4163-811c-c4248b495e57  *******/
         xhr.onerror = function() {
-            console.error('There was a problem with the upload operation.');
+            console.error('Der var et problem med at uploade.');
         };
 
         xhr.send(formData);
@@ -94,7 +87,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 
 async function fetchRecentFiles() {
     try {
-        const response = await fetch('http://172.16.3.42:3000/recent-files'); // Update this line
+        const response = await fetch('http://172.16.3.42:3000/recent-files');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -111,7 +104,7 @@ async function fetchRecentFiles() {
             link.textContent = file.name;
             const uploadInfo = document.createElement('span');
             uploadInfo.className = 'upload-info';
-            uploadInfo.textContent = ` (Uploaded on: ${file.uploadDate})`;
+            uploadInfo.textContent = ` (Uploadede den: ${file.uploadDate})`;
             listItem.appendChild(link);
             listItem.appendChild(uploadInfo);
             fileList.appendChild(listItem);

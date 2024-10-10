@@ -47,7 +47,7 @@ body {
     margin-top: -2vh;
     margin-bottom: 2vh;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 2.5vw #19EE7Da2;
+    box-shadow: 0 0 2.5vw #19ee7c65;
 }
 
 #fileLink:hover {
@@ -56,7 +56,7 @@ body {
     border-color: #fff;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 0 2.5vw #ffffffa2;
+    box-shadow: 0 0 2.25vw #ffffff86;
 }
 
 main {
@@ -102,11 +102,11 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1vw; /* Optional: Adds space between the links */
+    gap: 1vw;
     margin-top: 2vw;
 }
 
 #fileLink, #back {
     display: block;
-    margin: -0.25vw 0; /* Optional: Adds vertical margin to each link */
+    margin: -0.25vw 0;
 }

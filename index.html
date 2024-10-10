@@ -7,18 +7,18 @@
     <script src="script.js" defer></script>
     <link href='https://fonts.googleapis.com/css?family=Unbounded' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Hjemmeside</title>
 </head>
 <body>
     <main>
         <div id="recentFiles">
-            <h2>Recently Uploaded Files</h2>
+            <h2>Nyligt uploadede filer</h2>
             <ul id="fileList"></ul>
         </div>
         <form id="uploadForm" enctype="multipart/form-data">
             <div id="uploadProgressText" class="progress-text" style="display: none;">0%</div>
             <input type="file" id="fileInput" name="file">
-            <label for="fileInput" class="custom-file-input">Upload File</label>
+            <label for="fileInput" class="custom-file-input">Upload Fil</label>
             <svg id="upload" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z"
@@ -34,8 +34,8 @@
     </main>
     <div id="fileSizeModal" class="modal">
         <div class="modal-content">
-            <p>File size exceeds the limit of 10 MB.</p>
-            <button class="close">Close</button>
+            <p>Filen fylder mere end 10 MB.</p>
+            <button class="close">Luk</button>
         </div>
     </div>
 </body>

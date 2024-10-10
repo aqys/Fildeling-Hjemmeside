@@ -9,7 +9,7 @@ app.use(cors());
 
 const upload = multer({
     dest: 'files/',
-    limits: { fileSize: 10 * 1024 * 1024 } // 10 MB file size limit
+    limits: { fileSize: 10 * 1024 * 1024 } // 10 MB fil limit
 });
 
 const metadataFilePath = path.join(__dirname, 'files', 'metadata.json');
@@ -70,7 +70,27 @@ app.post('/upload', upload.single('file'), (req, res) => {
     renameWithRetry(file.path, filePath)
         .then(() => {
             const uploadDate = new Date().toISOString();
-            fileMetadata[originalName] = { uploadDate };
+            const deleteDuration = req.body['delete-duration'];
+            const customDeleteDuration = req.body['custom-delete-duration'];
+            let deleteTimeout;
+
+            if (customDeleteDuration) {
+                deleteTimeout = parseInt(customDeleteDuration) * 60 * 60 * 1000; // convert hours to milliseconds
+            } else {
+                switch (deleteDuration) {
+                    case '1h':
+                        deleteTimeout = 1 * 60 * 60 * 1000; // 1 hour
+                        break;
+                    case '2h':
+                        deleteTimeout = 2 * 60 * 60 * 1000; // 2 hours
+                        break;
+                    // Add more cases as needed
+                    default:
+                        deleteTimeout = 24 * 60 * 60 * 1000; // default to 24 hours
+                }
+            }
+
+            fileMetadata[originalName] = { uploadDate, deleteTimeout };
             fs.writeFileSync(metadataFilePath, JSON.stringify(fileMetadata, null, 2));
 
             const filePageUrl = `${req.protocol}://${req.get('host')}/file/${originalName}`;
@@ -82,11 +102,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
         });
 });
 
-// Error handling middleware for multer
 app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-            return res.status(400).json({ error: 'File size exceeds the limit of 5 MB' });
+            return res.status(400).json({ error: 'Filen fylder mere end 10 MB' });
         }
     }
     next(err);
@@ -152,12 +171,11 @@ app.listen(3000, () => {
     console.log('Server started on http://172.16.3.42:3000');
 });
 
-// Periodic check to delete files older than 24 hours
 setInterval(() => {
     const now = new Date();
     const oneMinuteAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-    console.log('Running periodic check for files older than 24 hours');
+    console.log('Tjekker om filer er ældre end 24 timer.');
 
     for (const [filename, metadata] of Object.entries(fileMetadata)) {
         const uploadDate = new Date(metadata.uploadDate);
@@ -174,4 +192,4 @@ setInterval(() => {
             });
         }
     }
-}, 5 * 60 * 1000); // Run every 5 minutes
+}, 5 * 60 * 1000);
